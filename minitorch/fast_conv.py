@@ -91,8 +91,29 @@ def _tensor_conv1d(
     s2 = weight_strides
 
     # TODO: Implement for Task 4.1.
-    raise NotImplementedError("Need to implement for Task 4.1")
+    for i in prange(out_size):
+        #get position in out
+        out_index = np.zeros(MAX_DIMS, dtype=np.int32)
+        to_index(i, out_shape, out_index)
+        batch, out_channel, out_width = out_index[0], out_index[1], out_index[2]
+        out_pos = index_to_position(out_index, out_strides)
 
+        #initalize to zero
+        out[out_pos] = 0.0
+
+        #iterate over in channels and move over 
+        for in_channel in prange(in_channels):
+            for offset in prange(kw):
+                in_width = out_width - offset if reverse else out_width + offset
+                if in_width < 0 or in_width >= width:
+                    continue
+                
+                # use strides to convert the batch, input and width to the position in the input tensor
+                input_pos = batch * s1[0] + in_channel * s1[1] + in_width * s1[2]
+
+                # use strides to covert the channel, 
+                weight_pos = out_channel * s2[0] + in_channel * s2[1] + offset * s2[2]
+                out[out_pos] += (input[input_pos] * weight[weight_pos])
 
 tensor_conv1d = njit(_tensor_conv1d, parallel=True)
 
