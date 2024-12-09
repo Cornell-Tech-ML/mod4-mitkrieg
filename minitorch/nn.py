@@ -88,7 +88,7 @@ class Max(Function):
     def backward(ctx: Context, grad: Tensor) -> Tuple[Tensor, float]:
         """Backward for max, derivate of max is argmax"""
         (input, dim) = ctx.saved_values
-        return argmax(input, int(dim.items())) * grad, 0
+        return argmax(input, int(dim.item())) * grad, 0
     
 
 # - max: Apply max reduction
