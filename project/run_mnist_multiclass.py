@@ -73,7 +73,7 @@ class Network(minitorch.Module):
         self.conv2 = Conv2d(4,8,3,3)
         self.lin1 = Linear(392, 64)
         self.lin2 = Linear(64, C)
-        
+
 
     def forward(self, x):
         # TODO: Implement for Task 4.5.
