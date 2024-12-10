@@ -330,7 +330,7 @@ def zipWith(
 
 
 # - reduce
-def reduce(func: Callable[[float, float], float]) -> Callable[[Iterable[float]], float]:
+def reduce(func: Callable[[float, float], float], start: float) -> Callable[[Iterable[float]], float]:
     """Higher-order function that reduces an iterable to a single value using a given function
 
     Args:
@@ -344,15 +344,15 @@ def reduce(func: Callable[[float, float], float]) -> Callable[[Iterable[float]],
     """
 
     def inner(collection: Iterable[float]) -> float:
-        current = None
+        current = start
         for element in collection:
             if current is None:
                 current = element
             else:
                 current = func(current, element)
 
-        if current is None:
-            raise ValueError("No values to reduce")
+        # if current is None:
+        #     raise ValueError("No values to reduce")
         return current
 
     return inner
@@ -411,7 +411,7 @@ def sum(ls: list[float]) -> float:
     """
     if len(ls) == 0:
         return 0.0
-    return reduce(add)(ls)
+    return reduce(add, 0)(ls)
 
 
 # - prod: take the product of lists
@@ -427,4 +427,4 @@ def prod(ls: list[float] | Sequence[float]) -> float:
         float: product of all elements in list
 
     """
-    return reduce(mul)(ls)
+    return reduce(mul, 1)(ls)

@@ -63,7 +63,7 @@ def avgpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
     output = input.mean(4).view(batch, channel, out_height, out_width)
     return output
 
-fastops_max_reduce = FastOps.reduce(operators.max)
+fastops_max_reduce = FastOps.reduce(operators.max, -1e9) #start a little negative to account for zero
 
 # - argmax: Compute the argmax as a 1-hot tensor
 def argmax(input:Tensor, dim: int) -> Tensor:
