@@ -285,7 +285,7 @@ def _sum_practice(out: Storage, a: Storage, size: int) -> None:
     if i < size:
         cache[pos] = a[i]
     else:
-        cache[pos] = 0.0 # pads in case of odd values
+        cache[pos] = 0.0  # pads in case of odd values
     # wait for everything to copy
     cuda.syncthreads()
     # sum elements
@@ -509,30 +509,30 @@ def _tensor_matrix_multiply(
             a_pos = (
                 batch * a_batch_stride + i * a_strides[1] + (start + pj) * a_strides[2]
             )
-            a_shared[pi, pj] = a_storage[a_pos] #zero padding
+            a_shared[pi, pj] = a_storage[a_pos]  # zero padding
         else:
-            a_shared[pi, pj] = 0.
+            a_shared[pi, pj] = 0.0
         # b) Copy into shared memory for b matrix
         # Get position in b's storage but gaurd against out of bounds elements
         if start + pi < b_shape[1] and j < out_shape[2]:
             b_pos = (
-                batch * b_batch_stride
-                + (start + pi) * b_strides[1]
-                + j * b_strides[2]
+                batch * b_batch_stride + (start + pi) * b_strides[1] + j * b_strides[2]
             )
             b_shared[pi, pj] = b_storage[b_pos]
         else:
-            b_shared[pi, pj] = 0. #zero padding
+            b_shared[pi, pj] = 0.0  # zero padding
 
-        cuda.syncthreads() # ensure all data has been copied over before starting compute
+        cuda.syncthreads()  # ensure all data has been copied over before starting compute
 
         # c) Compute the dot produce for position c[i, j]
         # multiplication inside of tile in shared memeory
         for k in range(BLOCK_DIM):
-            if k + start < a_shape[2]: #check within bounds
-                accumulator += a_shared[pi, k] * b_shared[k, pj] #accumulate multiplications
+            if k + start < a_shape[2]:  # check within bounds
+                accumulator += (
+                    a_shared[pi, k] * b_shared[k, pj]
+                )  # accumulate multiplications
 
-        cuda.syncthreads() #ensure all calculations have finished
+        cuda.syncthreads()  # ensure all calculations have finished
 
     # Write accumulated value to global
     if i < out_shape[1] and j < out_shape[2]:

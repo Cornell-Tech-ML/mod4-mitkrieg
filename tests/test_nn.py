@@ -34,26 +34,26 @@ def test_max(t: Tensor) -> None:
     # TODO: Implement for Task 4.4.
     # test dimension 0
     dim0 = minitorch.max(t, 0)
-    assert dim0.shape == (1,3,4)
+    assert dim0.shape == (1, 3, 4)
     for h in range(3):
         for w in range(4):
-            assert(dim0[0,h,w] == max(t[b,h,w] for b in range(2)))
+            assert dim0[0, h, w] == max(t[b, h, w] for b in range(2))
 
     # test dimension 1
     dim0 = minitorch.max(t, 1)
-    assert dim0.shape == (2,1,4)
+    assert dim0.shape == (2, 1, 4)
     for b in range(2):
         for w in range(4):
-            assert(dim0[b,0,w] == max(t[b,h,w] for h in range(3)))
+            assert dim0[b, 0, w] == max(t[b, h, w] for h in range(3))
 
     # test dimension 2
     dim0 = minitorch.max(t, 2)
     for b in range(2):
         for h in range(3):
-            assert(dim0[b,h,0] == max(t[b,h,w] for w in range(4)))
+            assert dim0[b, h, 0] == max(t[b, h, w] for w in range(4))
 
     random = minitorch.rand(t.shape)
-    minitorch.grad_check(lambda x: minitorch.max(x,2), t + random)
+    minitorch.grad_check(lambda x: minitorch.max(x, 2), t + random)
 
 
 @pytest.mark.task4_4

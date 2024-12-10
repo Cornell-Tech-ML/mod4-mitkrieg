@@ -330,12 +330,15 @@ def zipWith(
 
 
 # - reduce
-def reduce(func: Callable[[float, float], float], start: float) -> Callable[[Iterable[float]], float]:
+def reduce(
+    func: Callable[[float, float], float], start: float
+) -> Callable[[Iterable[float]], float]:
     """Higher-order function that reduces an iterable to a single value using a given function
 
     Args:
     ----
         func (Callable): a function that will reduce all elements in an iterable to a single value
+        start (float): starting value for reduction
 
     Returns:
     -------
