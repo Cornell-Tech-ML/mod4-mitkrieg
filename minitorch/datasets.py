@@ -5,6 +5,17 @@ from typing import List, Tuple
 
 
 def make_pts(N: int) -> List[Tuple[float, float]]:
+    """Generate N random points in the unit square.
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        List[Tuple[float, float]]: list of N randomly generated points
+
+    """
     X = []
     for i in range(N):
         x_1 = random.random()
@@ -21,6 +32,17 @@ class Graph:
 
 
 def simple(N: int) -> Graph:
+    """Make simple graph of two classes
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: simple graph of random points
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -30,6 +52,17 @@ def simple(N: int) -> Graph:
 
 
 def diag(N: int) -> Graph:
+    """Make a graph of two classes with a diagonal boundary
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: graph of two classes with a diagonal boundary
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -39,6 +72,17 @@ def diag(N: int) -> Graph:
 
 
 def split(N: int) -> Graph:
+    """Make a graph of one class splitting another
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: a graph of one class splitting the other class
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -48,25 +92,59 @@ def split(N: int) -> Graph:
 
 
 def xor(N: int) -> Graph:
+    """Make a graph of the XOR quadrants for two classes
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: a graph of XOR quadrants for two classes
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
-        y1 = 1 if ((x_1 < 0.5 and x_2 > 0.5) or (x_1 > 0.5 and x_2 < 0.5)) else 0
+        y1 = 1 if x_1 < 0.5 and x_2 > 0.5 or x_1 > 0.5 and x_2 < 0.5 else 0
         y.append(y1)
     return Graph(N, X, y)
 
 
 def circle(N: int) -> Graph:
+    """Make a graph where one class surrounds another in a circle
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: a graph of two classes with a circular boundary
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
-        x1, x2 = (x_1 - 0.5, x_2 - 0.5)
+        x1, x2 = x_1 - 0.5, x_2 - 0.5
         y1 = 1 if x1 * x1 + x2 * x2 > 0.1 else 0
         y.append(y1)
     return Graph(N, X, y)
 
 
 def spiral(N: int) -> Graph:
+    """Make a graph of spiral classes
+
+    Args:
+    ----
+        N (int): number of points to generate
+
+    Returns:
+    -------
+        Graph: a graph of two spiral classes
+
+    """
+
     def x(t: float) -> float:
         return t * math.cos(t) / 20.0
 
